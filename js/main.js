@@ -109,6 +109,19 @@ function handleLikeClick(post, likeButtonEl, likeCounterEl) {
 
         // salvo l'ID del post nell'array dei post apprezzati
         likedPosts.push(postId);
+    } else {
+        // Se il post ha già il 'mi piace', decremento il contatore e cambio il colore del bottone
+        likeButtonEl.classList.remove('like-button--liked');
+
+        // decremento il contatore dei 'mi piace'
+        const likeCount = parseInt(likeCounterEl.textContent, 10) - 1;
+        likeCounterEl.textContent = likeCount;
+
+        // trovo l'indice del post nell'array 
+        const indexToRemove = likedPosts.indexOf(postId);
+
+        // rimuovo l'id del post nell'array con .splice 
+        likedPosts.splice(indexToRemove, 1);
     }
 }
 
@@ -194,7 +207,10 @@ posts.forEach((post) => {
     }
 
 
-    likeButtonEl.addEventListener('click', () => {
+    likeButtonEl.addEventListener('click', (event) => {
+        // con questo prevengo il comportamento di default (prima a ogni click sul mi piace,
+        // la pagina tornava su da sola)
+        event.preventDefault();
 
         // Utilizzo la funzione handleLikeClick per gestire il clic sul pulsante "Mi Piace"
 
