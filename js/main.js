@@ -171,12 +171,37 @@ posts.forEach((post) => {
 
     // console.log(likeButtonEl, likeCounterEl);
 
+    const fallBackEl = newPost.querySelector('.profile-pic');
+    
+    if (post.author.image) {
+        // se l'user ha l'immagine allora la prende con src
+        fallBackEl.src = post.author.image;
+    } else {   
+        // altrimenti se l'immagine del profilo è assente, aggiungiamo il fallback
+
+        // estraggo le iniziali del nome dell'user
+        // utilizzo .split per dividere il nome completo dell'user in singole parole
+        // utilizzo .map per estrarre la prima lettera di ogni parola
+        // infine utilizzo .join per combinare le due iniziale
+        const initials = post.author.name.split(' ').map(word => word[0].toUpperCase()).join('');
+
+        fallBackEl.classList.add('profile-pic-default');
+        // attraverso questo servizio che fornisce un'immagine temporanea di fallback, agli user senza
+        // la foto profilo, verranno visualizzate le iniziale del nome 
+        fallBackEl.src = `https://via.placeholder.com/100/0CD977/FFFFFF/?text=${initials}`;
+    
+        
+    }
+
+
     likeButtonEl.addEventListener('click', () => {
 
         // Utilizzo la funzione handleLikeClick per gestire il clic sul pulsante "Mi Piace"
 
         handleLikeClick(post, likeButtonEl, likeCounterEl);
         });
+
+
     });
 
 
