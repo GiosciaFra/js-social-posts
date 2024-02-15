@@ -112,6 +112,13 @@ function handleLikeClick(post, likeButtonEl, likeCounterEl) {
     }
 }
 
+//creo la funzione per formattare la data in formato italiano(gg/mm/aaaa)
+function formatDate(dateString) {
+    const detail = { day: '2-digit', month: ' 2-digit', year: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('it-IT');
+}
+
 posts.forEach((post) => {
 
     // creo i post
@@ -150,6 +157,11 @@ posts.forEach((post) => {
     </div>            
     `;
 
+    // Aggiungo la data formattata al post
+    const formattedDate = formatDate(post.created);
+    const postMetaTimeEl = newPost.querySelector('.post-meta__time');
+    postMetaTimeEl.textContent = formattedDate;
+
     // 'appendo' i post alla pagina
     containerEl.append(newPost);
 
@@ -157,7 +169,7 @@ posts.forEach((post) => {
     const likeButtonEl = newPost.querySelector('.js-like-button');
     const likeCounterEl = newPost.querySelector('.js-likes-counter');
 
-    console.log(likeButtonEl, likeCounterEl); 
+    // console.log(likeButtonEl, likeCounterEl);
 
     likeButtonEl.addEventListener('click', () => {
 
@@ -166,6 +178,9 @@ posts.forEach((post) => {
         handleLikeClick(post, likeButtonEl, likeCounterEl);
         });
     });
+
+
+
 
 
 
