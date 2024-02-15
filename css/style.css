@@ -112,8 +112,11 @@ h1 {
 }
 
 .like-button:not(.like-button--liked):hover {
-    background-color: #e3e3e3
+    background-color: #e3e3e3;
+    
 }
+
+
 
 .like-button__label {
     font-weight: bold;

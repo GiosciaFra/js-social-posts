@@ -32,7 +32,7 @@ const posts = [
     {
         id: 1,
         content: "Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.",
-       media: "https://unsplash.it/600/300?image=171",
+        media: "https://unsplash.it/600/300?image=171",
         author: {
             name: "Phil Mangione",
             image: "https://unsplash.it/300/300?image=15"
@@ -68,7 +68,7 @@ const posts = [
         media: "https://unsplash.it/600/400?image=24",
         author: {
             name: "Luca Formicola",
-            image: null
+            image: ""
         },
         likes: 56,
         created: "2021-04-03"
@@ -85,14 +85,36 @@ const posts = [
         created: "2021-03-05"
     },
 ];
-console.log(posts)
+// console.log(posts)
 
 const containerEl = document.querySelector('#container');
 
-posts.forEach(() => {
-    
+// memorizzo ID dei post apprezzati
+const likedPosts = [];
+
+// Funzione per aggiornare il contatore dei "Mi Piace" 
+// e gestire il clic sul pulsante "Mi Piace"
+function handleLikeClick(post, likeButtonEl, likeCounterEl) {
+    const postId = post.id;
+    const isLiked = likedPosts.includes(postId);
+
+    if (!isLiked) {
+
+
+        likeButtonEl.classList.add('like-button--liked');
+
+        // incremento il contatore dei "Mi Piace"
+        const likeCount = parseInt(likeCounterEl.textContent, 10) + 1;
+        likeCounterEl.textContent = likeCount;
+
+        // salvo l'ID del post nell'array dei post apprezzati
+        likedPosts.push(postId);
+    }
+}
+
+posts.forEach((post) => {
+
     // creo i post
-    
     const newPost = document.createElement('div');
     newPost.classList.add('post');
 
@@ -101,28 +123,28 @@ posts.forEach(() => {
     <div class="post__header">
         <div class="post-meta">                    
             <div class="post-meta__icon">
-                <img class="profile-pic" src="https://unsplash.it/300/300?image=15" alt="Phil Mangione">                    
+                <img class="profile-pic" src=${post.author.image} alt=" ${post.author.name}">                    
             </div>
             <div class="post-meta__data">
-                <div class="post-meta__author">Phil Mangione</div>
-                <div class="post-meta__time">4 mesi fa</div>
+                <div class="post-meta__author"> ${post.author.name} </div>
+                <div class="post-meta__time">${post.created}</div>
             </div>                    
         </div>
     </div>
-    <div class="post__text">Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.</div>
+    <div class="post__text">${post.content}</div>
     <div class="post__image">
-        <img src="https://unsplash.it/600/300?image=171" alt="">
+        <img src=${post.media} alt="">
     </div>
     <div class="post__footer">
         <div class="likes js-likes">
             <div class="likes__cta">
-                <a class="like-button  js-like-button" href="#" data-postid="1">
+                <a class="like-button  js-like-button" href="#" data-postid="${post.id}">
                     <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                     <span class="like-button__label">Mi Piace</span>
                 </a>
             </div>
             <div class="likes__counter">
-                Piace a <b id="like-counter-1" class="js-likes-counter">80</b> persone
+                Piace a <b id="like-counter-${post.id}" class="js-likes-counter">${post.likes}</b> persone
             </div>
         </div> 
     </div>            
@@ -131,5 +153,20 @@ posts.forEach(() => {
     // 'appendo' i post alla pagina
     containerEl.append(newPost);
 
+    // Seleziono il bottone 'mi piace' e il contatore dei 'mi piace' per il post corrente
+    const likeButtonEl = newPost.querySelector('.js-like-button');
+    const likeCounterEl = newPost.querySelector('.js-likes-counter');
 
-})
+    console.log(likeButtonEl, likeCounterEl); 
+
+    likeButtonEl.addEventListener('click', () => {
+
+        // Utilizzo la funzione handleLikeClick per gestire il clic sul pulsante "Mi Piace"
+
+        handleLikeClick(post, likeButtonEl, likeCounterEl);
+        });
+    });
+
+
+
+
